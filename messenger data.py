@@ -68,4 +68,22 @@ shut_up_rank = count_rank + length_rank + verbosity_rank
 output["shut the fuck up score"] = shut_up_rank
 #idiots are scored based on their ranks in the three metrics
 
-print(output)
+time_differences = {"Jason Lu": 0, "Josh Shipton": 0, "Jes Bromley": 0, "Kartikeya Kaushal": -6, "Declan Barrett": -12, }
+
+d = {}
+for idiot in idiots:
+    d["{}".format(idiot)] = df.loc[df['idiots']==idiot]
+
+
+def get_times_list(idiot):
+    times = d[idiot]["when"]
+    times_list = []
+    for time in times:
+        times_list.append(round((((int(time[11:13])+24+time_differences[idiot])%24)*3600 + int(time[14:16])*60 + int(time[17:19]))/(3600),2))
+    return times_list
+
+plt.hist(get_times_list("Declan Barrett"), bins = np.arange(0, 24, 1)) #change the name here
+plt.xticks(range(0, 24))
+plt.ylabel("number of messages")
+plt.xlabel("time")
+plt.show()
